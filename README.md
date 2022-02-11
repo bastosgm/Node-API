@@ -43,7 +43,7 @@ The command to run the server is:
 
 The routes for testing in postman, where {{BASE}} = http://localhost:4000, are:
 
-| Header | Another header    |
+| Method | Route             |
 | ------ | ----------------- |
 | GET    | {{BASE}}/todo     |
 | POST   | {{BASE}}/todo     |
