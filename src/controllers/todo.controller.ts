@@ -7,7 +7,15 @@ export const all = async (req: Request, res: Response) => {
   res.json({ list })
 }
 export const add = async (req: Request, res: Response) => {
-  
+  if(req.body.title) {
+    const task = Todo.build({
+      title: req.body.title
+    })
+    await task.save()
+    res.status(201).json({task})
+  } else {
+    res.json({ Error: 'Não foi possível adicionar nova task'})
+  }
 }
 export const update = async () => {
 
