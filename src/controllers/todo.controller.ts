@@ -3,7 +3,7 @@ import { Todo } from '../models/Todo'
 
 export const all = async (req: Request, res: Response) => {
   const list = await Todo.findAll()
-  res.status(200)
+  res.status(200) // to show OK
   res.json({ list })
 }
 export const add = async (req: Request, res: Response) => {
@@ -12,9 +12,9 @@ export const add = async (req: Request, res: Response) => {
       title: req.body.title
     })
     await task.save()
-    res.status(201).json({task})
+    res.status(201).json({task}) // to show CREATED
   } else {
-    res.json({ Error: 'Não foi possível adicionar nova task'})
+    res.json({error: 'could not add task'})
   }
 }
 export const update = async (req: Request, res: Response) => {
@@ -44,9 +44,18 @@ export const update = async (req: Request, res: Response) => {
      await task.save()
      res.json({task})
   } else {
-    res.json({Error: 'Item not found :('})
+    res.json({error: 'Item not found :('})
   }
 }
-export const remove = async () => {
-
+export const remove = async (req: Request, res: Response) => {
+  const { id } = req.params
+  let task = await Todo.findByPk(id)
+  if(task) {
+    await task.destroy()
+  }
+  // geralmente não é feito, apesar de opcional
+  // else {
+  //   res.json({error: 'Item not found :('})
+  // }
+  res.json({})
 }
