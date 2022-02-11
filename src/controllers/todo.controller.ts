@@ -1,14 +1,17 @@
 import { Request, Response } from 'express'
 import { Todo } from '../models/Todo'
 
+//will show all tasks
 export const all = async (req: Request, res: Response) => {
   const list = await Todo.findAll()
   res.status(200) // to show OK
   res.json({ list })
 }
+
+//will add a new task
 export const add = async (req: Request, res: Response) => {
   if(req.body.title) {
-    const task = Todo.build({
+    const task = Todo.build({ //not required await
       title: req.body.title
     })
     await task.save()
@@ -27,9 +30,9 @@ export const update = async (req: Request, res: Response) => {
     }
 
     if(req.body.done) {
-      //true,1 = false,0 opcional em apis
-      //reduz a lowerCase para facilitar o switch
-      //caso nao seja nenhuma das options, o valor atual de mantém
+      //true,1 = false,0 - may appear in some apis
+      //turns it into lowerCase so that define only those options
+      //if none of the options is present, the current value of keeps
       switch(req.body.done.toLowerCase()) { 
       case 'true':
       case '1':
@@ -51,11 +54,7 @@ export const remove = async (req: Request, res: Response) => {
   const { id } = req.params
   let task = await Todo.findByPk(id)
   if(task) {
-    await task.destroy()
+    await task.destroy() //not required save() method
   }
-  // geralmente não é feito, apesar de opcional
-  // else {
-  //   res.json({error: 'Item not found :('})
-  // }
   res.json({})
 }
